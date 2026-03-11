@@ -3,6 +3,9 @@ package org.example.webapplab1.movies;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -22,5 +25,23 @@ public class MovieController {
         System.out.println("Found " + movies.size() + " movies");
     model.addAttribute("movies", movies);
     return "movies";
+    }
+
+    @GetMapping("/movies/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("movie", new Movie());
+        return "create-movie";
+    }
+
+    @PostMapping("/movies")
+    public String createMovie(@ModelAttribute("movie") Movie movie) {
+        movieService.save(movie);
+        return "redirect:/movies";
+    }
+
+    @GetMapping("/movies/delete/{id}")
+    public String deleteMovie(@PathVariable("id") Long id) {
+        movieService.deleteById(id);
+        return "redirect:/movies";
     }
 }

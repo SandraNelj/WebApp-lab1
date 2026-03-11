@@ -14,6 +14,7 @@ public class Movie {
     private Long id;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column (name = "release_date")

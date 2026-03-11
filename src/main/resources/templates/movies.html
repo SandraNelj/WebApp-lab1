@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Movie List</h1>
+<a th:href="@{/movies/new}">Add new Movie</a>
 <table border="1">
     <tr>
         <th>Movie Title</th>
@@ -17,7 +18,7 @@
     <td th:text="${movie.title}">Title</td>
     <td th:text="${movie.director}">Director</td>
     <td th:text="${movie.releaseDate}">Date</td>
-    <td th:text="${movie.durationMinutes}">Duration</td>
+    <td th:text="${movie.durationMinutes}">Duration (minutes)</td>
     </tr>
 </table>
 </body>
