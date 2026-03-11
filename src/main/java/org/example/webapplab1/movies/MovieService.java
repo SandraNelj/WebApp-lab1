@@ -14,4 +14,12 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return movieRepo.findAll();
     }
+
+    public Movie save(Movie movie) {
+        return movieRepo.save(movie);
+    }
+
+    public void deleteById(Long id) {
+        movieRepo.deleteById(id);
+    }
 }
