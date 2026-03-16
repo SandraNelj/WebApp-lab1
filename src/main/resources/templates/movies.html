@@ -20,9 +20,11 @@
     <td th:text="${movie.director}">Director</td>
     <td th:text="${movie.releaseDate}">Date</td>
     <td th:text="${movie.durationMinutes}">Duration</td>
-        <td>
+
+        <td style="text-align: center">
+            <a th:href="@{/movies/edit/{id}(id=${movie.id})}">Edit</a>
             <form th:action="@{/movies/{id}/delete(id=${movie.id})}" method="post" style="display:inline">
-                +                <button type="submit">Delete</button>
+                <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
