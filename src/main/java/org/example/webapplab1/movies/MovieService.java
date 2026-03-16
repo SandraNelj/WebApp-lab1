@@ -2,6 +2,7 @@ package org.example.webapplab1.movies;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MovieService {
@@ -24,6 +25,7 @@ public class MovieService {
     }
 
     public Movie findById(Long id) {
-        return movieRepo.findById(id).get();
+        return movieRepo.findById(id).
+                orElseThrow(() -> new NoSuchElementException("Movie not found with id: " + id));
     }
 }
