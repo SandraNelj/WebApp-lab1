@@ -22,4 +22,8 @@ public class MovieService {
     public void deleteById(Long id) {
         movieRepo.deleteById(id);
     }
+
+    public Movie findById(Long id) {
+        return movieRepo.findById(id).get();
+    }
 }

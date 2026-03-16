@@ -44,4 +44,19 @@ public class MovieController {
         movieService.deleteById(id);
         return "redirect:/movies";
     }
+
+    @GetMapping("/movies/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        Movie movie = movieService.findById(id);
+        model.addAttribute("movie", movie);
+        return "edit-movie";
+    }
+    @PostMapping("/movies/update/{id}")
+    public String updateMovie(@PathVariable("id") Long id,
+                              @ModelAttribute("movie") Movie movie) {
+        movie.setId(id);
+        movieService.save(movie);
+        return "redirect:/movies";
+    }
 }
+
