@@ -1,12 +1,11 @@
 package org.example.webapplab1.movies;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -17,14 +16,6 @@ public class MovieController {
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
-    }
-
-    @GetMapping("/movies")
-    public String getMovies(Model model) {
-        List<Movie> movies = movieService.getAllMovies();
-        System.out.println("Found " + movies.size() + " movies");
-    model.addAttribute("movies", movies);
-    return "movies";
     }
 
     @GetMapping("/movies/new")
@@ -57,6 +48,19 @@ public class MovieController {
         movie.setId(id);
         movieService.save(movie);
         return "redirect:/movies";
+    }
+    @GetMapping("/movies")
+    public String listMovies (@RequestParam(required = false) String title,
+                              @RequestParam(required = false) String director,
+                              @RequestParam(required = false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate releaseDate,
+                              Model model) {
+        List <Movie> movies = movieService.filterMovies(title, director, releaseDate);
+        model.addAttribute("movies", movies);
+        model.addAttribute("title", title);
+        model.addAttribute("director", director);
+        model.addAttribute("releaseDate", releaseDate);
+
+        return "movies";
     }
 }
 

@@ -14,7 +14,7 @@ public class Movie {
     private Long id;
 
     private String title;
-    @Column(columnDefinition = "TEXT")
+
     private String description;
 
     @Column (name = "release_date")
@@ -26,6 +26,14 @@ public class Movie {
     private Integer durationMinutes;
 
     public Movie() {}
+
+    public Movie(String title, String description, LocalDate releaseDate, String director, Integer durationMinutes) {
+        this.title = title;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.director = director;
+        this.durationMinutes = durationMinutes;
+    }
 
     public Long getId() {
         return id;
