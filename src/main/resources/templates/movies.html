@@ -9,9 +9,9 @@
 <a th:href="@{/movies/new}">Add new Movie</a>
 <form th:action="@{/movies}" method="get">
     <label>Search by title: </label>
-    <input type="text" name="title" th:value="${title}">
+    <input type="text" name="title" th:value="${title != null ? title : ''}">
     <label>Search by director: </label>
-    <input type="text" name="director" th:value="${director}">
+    <input type="text" name="director" th:value="${director != null ? director : ''}">
     <label>Search by release date</label>
     <input type="date" name="releaseDate" th:value="${releaseDate}">
 
