@@ -30,7 +30,7 @@ public class MovieService {
     }
 
     public Page<MovieDTO> getMovies(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
         return movieRepo.findAll(pageable)
             .map(movieMapper::toDTO);
     }
@@ -63,13 +63,12 @@ public class MovieService {
     }
 
     public Page <MovieDTO> filterMovies(String title, String director, LocalDate releaseDate, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.max(size, 1));
 
         String searchTitle = title == null ? "" : title.toLowerCase();
         String searchDirector = director == null ? "" : director.toLowerCase();
 
         Page <Movie> moviesPage;
-
 
         if (releaseDate == null) {
             moviesPage = movieRepo.findByTitleContainingIgnoreCaseAndDirectorContainingIgnoreCase(

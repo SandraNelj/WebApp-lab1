@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public class UpdateMovieDTO {
 
-    @NotNull
     private Long id;
 
     @NotBlank
