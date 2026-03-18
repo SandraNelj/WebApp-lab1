@@ -39,5 +39,18 @@
         </td>
     </tr>
 </table>
+<div>
+    <a th:if="${currentPage > 0}"
+       th:href="@{/movies(page=${currentPage - 1}, title=${title}, director=${director}, releaseDate=${releaseDate})}">
+        Previous
+    </a>
+    <span>
+        Sida [[${currentPage + 1}]] av [[${totalPages}]]}
+    </span>
+    <a th:if="${currentPage + 1 < totalPages}"
+       th:href="@{/movies(page=${currentPage + 1}, title=${title}, releaseDate=${releaseDate})}">
+        Next
+    </a>
+</div>
 </body>
 </html>
