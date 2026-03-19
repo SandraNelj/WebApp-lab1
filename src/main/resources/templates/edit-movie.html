@@ -8,25 +8,25 @@
 <form th:action="@{/movies/update/{id}(id=${movie.id})}"
       th:object="${movie}"
       method="post">
-    <label>Movie Title
-    <input type="text" th:field="*{title}">
-    </label>
+    <label for="title">Movie Title</label>
+    <input type="text" id="title" th:field="*{title}">
+    <p style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
 
-    <label>Description
-    <input type="text" th:field="*{description}">
-    </label>
+    <label for="description">Description</label>
+    <input type="text" id="description" th:field="*{description}">
+    <p style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
 
-    <label>Release Date
-    <input type="text" th:field="*{releaseDate}">
-    </label>
+    <label for="releaseDate">Release Date</label>
+    <input type="date" id="releaseDate" th:field="*{releaseDate}">
+    <p style="color:red" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></p>
 
-    <label>Director
-    <input type="text" th:field="*{director}">
-    </label>
+    <label for="director">Director</label>
+    <input type="text" id="director" th:field="*{director}">
+    <p style="color:red" th:if="${#fields.hasErrors('director')}" th:errors="*{director}"></p>
 
-    <label>Duration
-    <input type="text" th:field="*{durationMinutes}">
-    </label>
+    <label for="durationMinutes">Duration</label>
+    <input type="number" id="durationMinutes" th:field="*{durationMinutes}">
+    <p style="color:red" th:if="${#fields.hasErrors('durationMinutes')}" th:errors="*{durationMinutes}"></p>
 
     <button type="submit">Update Movie</button>
 </form>
