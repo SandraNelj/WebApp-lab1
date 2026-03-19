@@ -1,8 +1,15 @@
 package org.example.webapplab1.movies;
 
+import jakarta.validation.Valid;
+import org.example.webapplab1.dto.CreateMovieDTO;
+import org.example.webapplab1.dto.MovieDTO;
+import org.example.webapplab1.dto.UpdateMovieDTO;
+import org.example.webapplab1.mapper.MovieMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -13,20 +20,25 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final MovieMapper movieMapper;
 
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, MovieMapper movieMapper) {
         this.movieService = movieService;
+        this.movieMapper = movieMapper;
     }
 
     @GetMapping("/movies/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("movie", new Movie());
+        model.addAttribute("movie", new CreateMovieDTO());
         return "create-movie";
     }
 
     @PostMapping("/movies")
-    public String createMovie(@ModelAttribute("movie") Movie movie) {
-        movieService.save(movie);
+    public String createMovie(@Valid @ModelAttribute("movie") CreateMovieDTO dto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "create-movie";
+        }
+        movieService.createMovie(dto);
         return "redirect:/movies";
     }
 
@@ -39,23 +51,31 @@ public class MovieController {
     @GetMapping("/movies/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         Movie movie = movieService.findById(id);
-        model.addAttribute("movie", movie);
+        model.addAttribute("movie", movieMapper.toUpdateDTO(movie));
         return "edit-movie";
     }
     @PostMapping("/movies/update/{id}")
     public String updateMovie(@PathVariable("id") Long id,
-                              @ModelAttribute("movie") Movie movie) {
-        movie.setId(id);
-        movieService.save(movie);
+                              @Valid @ModelAttribute("movie") UpdateMovieDTO dto,
+                              BindingResult result) {
+        if (result.hasErrors()) {
+            return "edit-movie";
+        }
+        movieService.updateMovie(id,dto);
         return "redirect:/movies";
     }
     @GetMapping("/movies")
     public String listMovies (@RequestParam(required = false) String title,
                               @RequestParam(required = false) String director,
                               @RequestParam(required = false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate releaseDate,
+                              @RequestParam(defaultValue = "0")int page,
                               Model model) {
-        List <Movie> movies = movieService.filterMovies(title, director, releaseDate);
-        model.addAttribute("movies", movies);
+
+        Page<MovieDTO> moviePage = movieService.filterMovies(title, director, releaseDate, page, 10);
+
+        model.addAttribute("movies", moviePage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", moviePage.getTotalPages());
         model.addAttribute("title", title);
         model.addAttribute("director", director);
         model.addAttribute("releaseDate", releaseDate);
