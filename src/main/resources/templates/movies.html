@@ -50,10 +50,10 @@
         Previous
     </a>
     <span>
-        Page [[${currentPage + 1}]] av [[${totalPages}]]
+        Page [[${currentPage + 1}]] of [[${totalPages}]]
     </span>
     <a th:if="${currentPage + 1 < totalPages}"
-       th:href="@{/movies(page=${currentPage + 1}, title=${title}, releaseDate=${releaseDate})}">
+       th:href="@{/movies(page=${currentPage + 1}, title=${title}, director=${director}, releaseDate=${releaseDate})}">
         Next
     </a>
 </div>

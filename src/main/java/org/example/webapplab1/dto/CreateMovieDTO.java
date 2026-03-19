@@ -20,6 +20,7 @@ public class CreateMovieDTO {
     @NotBlank
     private String director;
 
+    @NotNull
     @Min(1)
     private Integer durationMinutes;
 
