@@ -1,4 +1,5 @@
 package org.example.webapplab1.movies;
+import org.example.webapplab1.ResourceNotFoundException;
 import org.example.webapplab1.dto.CreateMovieDTO;
 import org.example.webapplab1.dto.MovieDTO;
 import org.example.webapplab1.dto.UpdateMovieDTO;
@@ -51,12 +52,15 @@ public class MovieService {
     }
 
     public void deleteById(Long id) {
+        if (!movieRepo.existsById(id)) {
+            throw new ResourceNotFoundException("Movie not found with id " + id);
+        }
         movieRepo.deleteById(id);
     }
 
     public Movie findById(Long id) {
         return movieRepo.findById(id).
-                orElseThrow(() -> new NoSuchElementException("Movie not found with id: " + id));
+                orElseThrow(() -> new ResourceNotFoundException("Movie not found with id: " + id));
     }
     public List<Movie> findByTitle(String title) {
         return movieRepo.findByTitleContainingIgnoreCase(title);
