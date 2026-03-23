@@ -13,10 +13,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,8 +40,14 @@ public class MovieServiceTest {
     @Test
     @DisplayName("Should return a list of all movies")
     void shouldReturnAllMovies() {
-        when(movieRepo.findAll()).thenReturn(List.of(new Movie()));
-        List < MovieDTO> result = movieService.getAllMovies();
+        Page<Movie> moviePage = new PageImpl<>(List.of(new Movie()));
+
+        when(movieRepo.findAll(any(Pageable.class)))
+            .thenReturn(moviePage);
+        when(movieMapper.toDTO(any(Movie.class)))
+            .thenReturn(new MovieDTO());
+
+        Page<MovieDTO> result = movieService.getMovies(0, 10);
         assertNotNull(result);
     }
 
@@ -93,5 +105,4 @@ public class MovieServiceTest {
         verify(movieMapper).updateEntity(updateMovieDTO, movie);
         verify(movieRepo).save(movie);
     }
-
 }
