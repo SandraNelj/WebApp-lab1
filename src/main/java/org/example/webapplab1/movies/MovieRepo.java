@@ -16,10 +16,6 @@ public interface MovieRepo extends ListCrudRepository<Movie,Long> {
 
     List<Movie> findByTitleContainingIgnoreCase(String title);
 
-    List<Movie> findByDirectorContainingIgnoreCase(String director);
-
-    List<Movie> findByReleaseDate(LocalDate releaseDate);
-
 
 
 

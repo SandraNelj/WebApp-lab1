@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
@@ -22,12 +20,6 @@ public class MovieService {
     public MovieService(MovieRepo movieRepo, MovieMapper movieMapper) {
         this.movieRepo = movieRepo;
         this.movieMapper = movieMapper;
-    }
-    public List<MovieDTO> getAllMovies() {
-        return movieRepo.findAll()
-            .stream()
-            .map(movieMapper::toDTO)
-            .toList();
     }
 
     public Page<MovieDTO> getMovies(int page, int size) {
@@ -47,9 +39,6 @@ public class MovieService {
         movieRepo.save(movie);
     }
 
-    public Movie save(Movie movie) {
-        return movieRepo.save(movie);
-    }
 
     public void deleteById(Long id) {
         if (!movieRepo.existsById(id)) {
